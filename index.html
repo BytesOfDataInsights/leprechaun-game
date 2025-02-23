@@ -8,6 +8,7 @@
             font-family: Arial, sans-serif;
             background-color: black; 
             color: white;
+            touch-action: manipulation; /* Prevents unwanted zooming */
         }
         canvas {
             background: linear-gradient(135deg, rgba(255,0,150,0.5), rgba(0,204,255,0.5), rgba(255,255,0,0.5));
@@ -45,6 +46,8 @@
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            user-select: none; /* Prevents text selection */
+            touch-action: manipulation; /* Disables zooming */
         }
         .control-btn:hover {
             background-color: gray;
@@ -64,8 +67,8 @@
 
     <!-- Touchscreen Controls -->
     <div class="controls">
-        <button class="control-btn" onclick="moveLeft()">⬅️</button>
-        <button class="control-btn" onclick="moveRight()">➡️</button>
+        <button class="control-btn" id="leftBtn">⬅️</button>
+        <button class="control-btn" id="rightBtn">➡️</button>
     </div>
 
     <script>
@@ -115,6 +118,21 @@
             }
 
             touchStartX = touchEndX; // Update position for smoother movement
+        });
+
+        // DISABLE DOUBLE-TAP ZOOM
+        document.addEventListener("dblclick", function(event) {
+            event.preventDefault();
+        });
+
+        // Fix for button zooming issue
+        document.getElementById("leftBtn").addEventListener("touchstart", function(event) {
+            event.preventDefault();
+            moveLeft();
+        });
+        document.getElementById("rightBtn").addEventListener("touchstart", function(event) {
+            event.preventDefault();
+            moveRight();
         });
 
         function moveLeft() {
